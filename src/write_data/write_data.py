@@ -11,6 +11,13 @@ import pickle as _pickle
 import zstandard as zstd
 
 
+def ensure_parent_dir(filename: str) -> None:
+    """Create parent directory for file writes if missing."""
+    parent = os.path.dirname(filename)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+
+
 def get_sha_256(file_to_hash: str):
     """Get human readable hash of file."""
     try:
@@ -77,6 +84,7 @@ def get_force_options(force_results: dict):
 
 def make_lookup_tables(gamestate: object, name: str):
     """Write lookup tables for all simulations."""
+    ensure_parent_dir(name)
     file = open(name, "w", encoding="UTF-8")
     sims = list(gamestate.library.keys())
     sims.sort()
@@ -87,6 +95,7 @@ def make_lookup_tables(gamestate: object, name: str):
 
 def make_lookup_pay_split(gamestate: object, name: str):
     """Record win values from basegame and freegame types."""
+    ensure_parent_dir(name)
     file = open(name, "w", encoding="UTF-8")
     sims = list(gamestate.library.keys())
     sims.sort()
@@ -146,6 +155,7 @@ def output_lookup_and_force_files(
 
     if compress:
         final_out = gamestate.output_files.get_final_book_name(betmode, True)
+        ensure_parent_dir(final_out)
         compressor = zstd.ZstdCompressor()
         with open(final_out, "wb") as f_out:
             with compressor.stream_writer(f_out, closefd=False) as writer:
@@ -159,6 +169,7 @@ def output_lookup_and_force_files(
                                     break
                                 writer.write(chunk)
     else:
+        ensure_parent_dir(gamestate.output_files.get_final_book_name(betmode, False))
         with open(
             gamestate.output_files.get_final_book_name(betmode, False),
             "w",
@@ -211,6 +222,7 @@ def output_lookup_and_force_files(
 
     json_object_for_rob = json.dumps(force_results_dict_just_for_rob, indent=4)
     force_record_path = os.path.join(gamestate.output_files.force_path, f"force_record_{betmode}.json")
+    ensure_parent_dir(force_record_path)
     with open(force_record_path, "w", encoding="UTF-8") as file:
         file.write(json_object_for_rob)
 
@@ -238,6 +250,7 @@ def output_lookup_and_force_files(
                 gamestate.output_files.get_temp_segmented_name(betmode, thread, repeat_index)
             ]
 
+    ensure_parent_dir(gamestate.output_files.get_final_lookup_name(betmode))
     with open(
         gamestate.output_files.get_final_lookup_name(betmode),
         "w",
@@ -253,6 +266,7 @@ def output_lookup_and_force_files(
             gamestate.output_files.get_final_lookup_name(betmode),
             gamestate.output_files.get_optimized_lookup_name(betmode),
         )
+    ensure_parent_dir(gamestate.output_files.get_final_segmented_name(betmode))
     with open(
         gamestate.output_files.get_final_segmented_name(betmode),
         "w",
@@ -298,6 +312,7 @@ def write_json(gamestate, filename: str, payout_ints=None):
     """Convert the list of dictionaries to a JSON-encoded string and compress it in chunks."""
     json_objects = [json.dumps(item) for item in gamestate.library.values()]
     combined_data = "\n".join(json_objects) + "\n"
+    ensure_parent_dir(filename)
 
     if filename.endswith(".zst"):
         compressor = zstd.ZstdCompressor()
@@ -323,6 +338,7 @@ def write_json(gamestate, filename: str, payout_ints=None):
 def print_recorded_wins(gamestate: object, name: str = ""):
     """Temporary file generation for wins/recorded results."""
     json_object = json.dumps(str(gamestate.recorded_events), indent=4)
+    ensure_parent_dir(name)
     file = open(name, "w", encoding="UTF-8")
     file.write(json_object)
     file.close()

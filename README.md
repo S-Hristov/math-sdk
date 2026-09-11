@@ -20,3 +20,6 @@ make setup
 
 Alternatively, visit our [Setup and Installation page](https://engineio.github.io/math-sdk/math_docs/general_overview/) for more details.
 
+## Generate and upload a game
+
+See [Generate and Upload Stake Math](docs/generate-and-upload.md) for the full workflow: local checks, production book generation, package validation, and Stake Engine ACP upload.

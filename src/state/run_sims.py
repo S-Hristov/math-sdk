@@ -2,6 +2,7 @@ import time
 import math
 import random
 import hashlib
+import os
 from multiprocessing import Process, Manager
 import cProfile
 from warnings import warn
@@ -38,6 +39,7 @@ def create_books(
     startTime = time.time()
     print("\nCreating books...")
     for betmode_name in num_sim_args:
+        os.makedirs(gamestate.output_files.temp_path, exist_ok=True)
         sim_counter = 0
         for bm in config.bet_modes:
             if bm.get_name() == betmode_name:
@@ -76,7 +78,8 @@ def create_books(
                 num_sims=nsims,
                 compress=compress,
             )
-    shutil.rmtree(gamestate.output_files.temp_path)
+    if os.path.exists(gamestate.output_files.temp_path):
+        shutil.rmtree(gamestate.output_files.temp_path)
     print("\nFinished creating books in", time.time() - startTime, "seconds.\n")
 
 

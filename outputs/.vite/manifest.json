@@ -1,0 +1,12 @@
+{
+  "../../node_modules/.pnpm/@sveltejs+kit@2.17.3_@sveltejs+vite-plugin-svelte@5.1.0_svelte@5.20.5_vite@6.2.0_@types_cea867823881517172a2960bf9594de1/node_modules/@sveltejs/kit/src/runtime/client/bundle.js": {
+    "file": "_app/immutable/bundle.Dnv6YKTU.js",
+    "name": "bundle",
+    "src": "../../node_modules/.pnpm/@sveltejs+kit@2.17.3_@sveltejs+vite-plugin-svelte@5.1.0_svelte@5.20.5_vite@6.2.0_@types_cea867823881517172a2960bf9594de1/node_modules/@sveltejs/kit/src/runtime/client/bundle.js",
+    "isEntry": true
+  },
+  "style.css": {
+    "file": "_app/immutable/assets/style.C7HUNBcP.css",
+    "src": "style.css"
+  }
+}
