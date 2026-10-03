@@ -1,0 +1,3 @@
+library/
+library-backup-*/
+__pycache__/

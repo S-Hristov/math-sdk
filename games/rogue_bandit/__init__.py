@@ -1,0 +1,1 @@
+"""Rogue Bandit math package."""
